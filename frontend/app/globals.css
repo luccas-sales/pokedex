@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@theme {
+  --color-asters-50: #F6ECF5;
+  --color-asters-100: #ECD9EB;
+  --color-asters-300: #BE9BBC;
+  --color-asters-500: #AF88B5;
+  --color-asters-700: #826387;
+  --color-asters-900: #5C4560;
+  --color-asters-950: #382A3A;
+
+  --color-sweet-pink-50: #FFF0F4;
+  --color-sweet-pink-100: #FFE1E9;
+  --color-sweet-pink-300: #F7AEC2;
+  --color-sweet-pink-500: #E89DBB;
+  --color-sweet-pink-700: #B87690;
+  --color-sweet-pink-900: #855266;
+  --color-sweet-pink-950: #543240;
+}
+
+
+@layer base {
+  body {
+    font-family: "Montserrat", sans-serif;
+    background: radial-gradient(circle, rgba(255, 225, 233, 1) 0%, rgba(130, 99, 135, 1) 100%);
+    color: var(--color-asters-950);
+    font-size: 16px;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  img,
+  iframe,
+  video,
+  svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  h1,
+  h2 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  i {
+    line-height: 0;
+  }
+
+  select,
+  ::picker(select) {
+    appearance: none;
+    overflow: hidden;
+  }
+
+  ::picker(select) {
+    border: none;
+    margin: 10px 0;
+    color: black;
+    background-color: var(--color-red-600);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  }
+
+  option {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
