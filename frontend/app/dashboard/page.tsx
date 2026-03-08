@@ -25,9 +25,9 @@ export default async function dashboard({
   const userPokemonData = [
     {
       id: 1,
-      pokedexId: 1,
+      pokedexId: 15,
       name: 'Charmander',
-      type: 'Fogo',
+      type: 'fogo',
       level: 10,
       hp: 39,
       image:
@@ -37,7 +37,7 @@ export default async function dashboard({
       id: 2,
       pokedexId: 2,
       name: 'Squirtle',
-      type: 'Agua',
+      type: 'agua',
       level: 10,
       hp: 44,
       image:
@@ -47,7 +47,7 @@ export default async function dashboard({
       id: 3,
       pokedexId: 3,
       name: 'Bulbasaur',
-      type: 'Planta',
+      type: 'planta',
       level: 10,
       hp: 45,
       image:
@@ -57,7 +57,7 @@ export default async function dashboard({
       id: 4,
       pokedexId: 4,
       name: 'Jynx',
-      type: 'Gelo',
+      type: 'gelo',
       level: 12,
       hp: 65,
       image:
@@ -67,7 +67,7 @@ export default async function dashboard({
       id: 5,
       pokedexId: 5,
       name: 'Machop',
-      type: 'Lutador',
+      type: 'lutador',
       level: 9,
       hp: 70,
       image:
@@ -77,7 +77,7 @@ export default async function dashboard({
       id: 6,
       pokedexId: 6,
       name: 'Ekans',
-      type: 'Veneno',
+      type: 'veneno',
       level: 8,
       hp: 35,
       image:
@@ -87,7 +87,7 @@ export default async function dashboard({
       id: 7,
       pokedexId: 7,
       name: 'Sandshrew',
-      type: 'Terra',
+      type: 'terra',
       level: 11,
       hp: 50,
       image:
@@ -97,7 +97,7 @@ export default async function dashboard({
       id: 8,
       pokedexId: 8,
       name: 'Pidgey',
-      type: 'Voador',
+      type: 'voador',
       level: 6,
       hp: 40,
       image:
@@ -107,7 +107,7 @@ export default async function dashboard({
       id: 9,
       pokedexId: 9,
       name: 'Caterpie',
-      type: 'Inseto',
+      type: 'inseto',
       level: 5,
       hp: 45,
       image:
@@ -117,7 +117,7 @@ export default async function dashboard({
       id: 10,
       pokedexId: 10,
       name: 'Geodude',
-      type: 'Pedra',
+      type: 'pedra',
       level: 12,
       hp: 40,
       image:
@@ -127,7 +127,7 @@ export default async function dashboard({
       id: 11,
       pokedexId: 11,
       name: 'Gastly',
-      type: 'Fantasma',
+      type: 'fantasma',
       level: 13,
       hp: 30,
       image:
@@ -137,7 +137,7 @@ export default async function dashboard({
       id: 12,
       pokedexId: 12,
       name: 'Umbreon',
-      type: 'Sombrio',
+      type: 'sombrio',
       level: 20,
       hp: 95,
       image:
@@ -147,7 +147,7 @@ export default async function dashboard({
       id: 13,
       pokedexId: 13,
       name: 'Clefairy',
-      type: 'Fada',
+      type: 'fada',
       level: 10,
       hp: 70,
       image:
@@ -157,13 +157,23 @@ export default async function dashboard({
       id: 14,
       pokedexId: 14,
       name: 'Eevee',
-      type: 'Normal',
+      type: 'normal',
       level: 8,
       hp: 55,
       image:
         'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png',
     },
   ];
+
+  const searchQuery = ((params.search as string) || '').toLowerCase();
+
+  const filteredPokemon = userPokemonData.filter((pokemon) => {
+    return (
+      pokemon.name.toLowerCase().includes(searchQuery) ||
+      pokemon.type.toLowerCase().includes(searchQuery) ||
+      pokemon.pokedexId.toString().includes(searchQuery)
+    );
+  });
 
   return (
     <>
@@ -233,17 +243,24 @@ export default async function dashboard({
             </div>
 
             <div className='flex flex-col gap-4'>
-              <div className='flex rounded-md border border-sweet-pink-950'>
+              <form
+                method='GET'
+                className='flex rounded-md border border-sweet-pink-950'
+              >
                 <FiSearch className='ml-3 text-asters-950/50' />
-
                 <input
-                  placeholder='Buscar por nome, tipo ou número...'
-                  className='w-full px-3 py-2'
+                  name='search'
+                  defaultValue={(params.search as string) || ''}
+                  placeholder='Buscar por nome, tipo ou número de id'
+                  className='w-full px-3 py-2 outline-none rounded-md'
                 />
-              </div>
+                <button type='submit' className='hidden'>
+                  Buscar
+                </button>
+              </form>
 
               <div className='grid grid-cols-4 gap-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1'>
-                {userPokemonData.map((pokemon) => (
+                {filteredPokemon.map((pokemon) => (
                   <PokemonCard key={pokemon.pokedexId} {...pokemon} />
                 ))}
               </div>
