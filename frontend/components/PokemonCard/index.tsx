@@ -110,7 +110,7 @@ export default function PokemonCard({
           <span className='font-mono text-sm text-black/50'>#{pokedexId}</span>
 
           <span
-            className={`rounded ${pokemonTypes[type.toLowerCase()].badge} px-2 py-0.5 text-xs text-white`}
+            className={`rounded ${pokemonTypes[type.toLowerCase()].badge} px-2 py-0.5 text-xs text-white uppercase`}
           >
             {type}
           </span>
@@ -142,8 +142,8 @@ export default function PokemonCard({
 
         <div className='flex gap-2'>
           <Link
-            className='flex justify-center items-center gap-2 bg-orange-700 text-sm
-                text-orange-50 font-bold py-2 px-4 rounded-md border-2 border-orange-700/50 text-nowrap cursor-pointer w-full transition-all duration-300 ease-out shadow-sm inset-shadow-sm active:scale-95 lg:active:scale-95 lg:hover:-translate-y-0.5 lg:hover:bg-orange-950 lg:hover:shadow-md'
+            className='flex justify-center items-center gap-2 bg-blue-700 text-sm
+                text-blue-50 font-bold py-2 px-4 rounded-md border-2 border-blue-700/50 text-nowrap cursor-pointer w-full transition-all duration-300 ease-out shadow-sm inset-shadow-sm active:scale-95 lg:active:scale-95 lg:hover:-translate-y-0.5 lg:hover:bg-blue-950 lg:hover:shadow-md'
             href={`?modal=edit&id=${id}`}
           >
             <FiEdit2 />

@@ -54,8 +54,9 @@ export default function AddPokemonModal({
         <div className='flex flex-col gap-2 text-left max-sm:text-center'>
           <h2 className='text-lg font-semibold'>Excluir Pokémon</h2>
           <p className='text-asters-950/50 text-sm'>
-            Tem certeza que deseja excluir <span>{pokemon.name}</span> da
-            Pokédex? Esta ação não pode ser desfeita.
+            Tem certeza que deseja excluir{' '}
+            <span className='font-bold'>{pokemon.name}</span> da Pokédex? Esta
+            ação não pode ser desfeita.
           </p>
         </div>
 
