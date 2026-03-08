@@ -25,7 +25,7 @@ export default function GenericInput({
 
       <input
         id={id}
-        className='border border-slate-200 w-full px-3 py-1 rounded-lg outline-none'
+        className='border border-asters-300 w-full px-3 py-1 rounded-lg outline-none'
         type={type}
         placeholder={placeholder}
         {...register}
