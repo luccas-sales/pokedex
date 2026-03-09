@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <SmoothWrapper>
       <main>
-        <section className='relative h-screen z-1 before:content-["*"] before:absolute before:top-0 before:left-0 before:h-full before:w-full before:bg-linear-to-b before:from-75% before:to-100% before:to-asters-950 before:z-2'>
+        <section className='relative h-dvh z-1 before:content-["*"] before:absolute before:top-0 before:left-0 before:h-full before:w-full before:bg-linear-to-b before:from-75% before:to-100% before:to-asters-950 before:z-2'>
           <Image
             className='absolute top-0 left-0 h-full w-full object-cover brightness-50 -z-1'
             src='/parallax-back.png'
@@ -35,15 +35,15 @@ export default function Home() {
 
           <div className='relative flex flex-col justify-center items-center h-full w-full gap-4 z-50'>
             <div className='flex flex-col justify-center items-center gap-2'>
-              <h2 className='text-7xl text-asters-500 font-extrabold text-shadow-md'>
+              <h2 className='text-7xl text-asters-500 font-extrabold text-shadow-md max-sm:text-6xl'>
                 Pokédex
               </h2>
 
               <div className='flex flex-col justify-center items-center'>
-                <p className='text-base font-semibold text-asters-100'>
+                <p className='text-base font-semibold text-asters-100 max-sm:text-sm'>
                   Sistema de gerenciamento de Pokémons
                 </p>
-                <p className='text-base font-semibold text-asters-100'>
+                <p className='text-base font-semibold text-asters-100 max-sm:text-sm'>
                   completo para os{' '}
                   <span className='text-asters-500 text-shadow-lg'>
                     MELHORES TREINADORES!
@@ -65,28 +65,28 @@ export default function Home() {
         <section className='relative flex flex-col justify-center items-center gap-10 -mt-px bg-asters-950 z-2'>
           <div className='flex flex-col justify-center items-center gap-4 m-25'>
             <div className='flex justify-center items-center gap-2'>
-              <p className='text-asters-100 border rounded-3xl px-4 py-1 text-lg font-bold text-shadow-md max-sm:text-sm'>
+              <p className='text-asters-100 border rounded-3xl px-4 py-1 text-lg font-bold text-shadow-md max-sm:text-sm max-sm:px-2'>
                 Next.js
               </p>
-              <p className='text-asters-100 border rounded-3xl px-4 py-1 text-lg font-bold text-shadow-md max-sm:text-sm'>
+              <p className='text-asters-100 border rounded-3xl px-4 py-1 text-lg font-bold text-shadow-md max-sm:text-sm max-sm:px-2'>
                 React
               </p>
-              <p className='text-asters-100 border rounded-3xl px-4 py-1 text-lg font-bold text-shadow-md max-sm:text-sm'>
+              <p className='text-asters-100 border rounded-3xl px-4 py-1 text-lg font-bold text-shadow-md max-sm:text-sm max-sm:px-2'>
                 TypeScript
               </p>
-              <p className='text-asters-100 border rounded-3xl px-4 py-1 text-lg font-bold text-shadow-md max-sm:text-sm'>
+              <p className='text-asters-100 border rounded-3xl px-4 py-1 text-lg font-bold text-shadow-md max-sm:text-sm max-sm:px-2'>
                 Nest.js
               </p>
             </div>
 
             <div className='flex justify-center items-center gap-4'>
-              <p className='text-asters-100 border rounded-3xl px-4 py-1 text-sm font-bold text-shadow-md max-sm:text-xs'>
+              <p className='text-asters-100 border rounded-3xl px-4 py-1 text-sm font-bold text-shadow-md max-sm:text-xs max-sm:px-2'>
                 GSAP
               </p>
-              <p className='text-asters-100 border rounded-3xl px-4 py-1 text-sm font-bold text-shadow-md max-sm:text-xs'>
+              <p className='text-asters-100 border rounded-3xl px-4 py-1 text-sm font-bold text-shadow-md max-sm:text-xs max-sm:px-2'>
                 Tailwind
               </p>
-              <p className='text-asters-100 border rounded-3xl px-4 py-1 text-sm font-bold text-shadow-md max-sm:text-xs'>
+              <p className='text-asters-100 border rounded-3xl px-4 py-1 text-sm font-bold text-shadow-md max-sm:text-xs max-sm:px-2'>
                 Prisma
               </p>
             </div>
