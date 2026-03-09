@@ -78,7 +78,7 @@ export default function AddPokemonForm() {
       setErrorMessage('');
 
       const token = Cookies.get('token');
-      const API = process.env.API_URL;
+      const API = process.env.NEXT_PUBLIC_API_URL;
 
       const response = await axios.post(
         `${API}/pokedex/pokemons`,

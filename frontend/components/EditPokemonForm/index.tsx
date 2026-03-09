@@ -80,7 +80,7 @@ export default function EditPokemonForm({ ...initialData }: EditFormProps) {
       setErrorMessage('');
 
       const token = Cookies.get('token');
-      const API = process.env.API_URL;
+      const API = process.env.NEXT_PUBLIC_API_URL;
 
       const response = await axios.put(
         `${API}/pokedex/pokemons/${initialData.id}`,

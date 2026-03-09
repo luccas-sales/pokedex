@@ -53,7 +53,7 @@ export default async function dashboard({
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value;
-    const API = process.env.API_URL;
+    const API = process.env.NEXT_PUBLIC_API_URL;
 
     const response = await axios.get(`${API}/pokedex/pokemons`, {
       headers: {

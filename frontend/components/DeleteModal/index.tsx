@@ -42,7 +42,7 @@ export default function AddPokemonModal({
       setErrorMessage('');
 
       const token = Cookies.get('token');
-      const API = process.env.API_URL;
+      const API = process.env.NEXT_PUBLIC_API_URL;
 
       const response = await axios.delete(`${API}/pokedex/pokemons/${id}`, {
         headers: {

@@ -37,7 +37,7 @@ export default function LoginForm() {
   const onSubmit = async (data: FormData) => {
     try {
       setErrorMessage('');
-      const API = process.env.API_URL;
+      const API = process.env.NEXT_PUBLIC_API_URL;
 
       const response = await axios.post(`${API}/auth/signin`, data);
 
