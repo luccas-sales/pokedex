@@ -21,7 +21,6 @@ interface Pokemon {
   id: number;
   pokedex_id: number;
   type: string;
-  image_url: string;
   name: string;
   level: number;
   hp: number;

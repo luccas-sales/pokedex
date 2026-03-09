@@ -30,7 +30,6 @@ model Pokedex {
   type        String   
   level       Int      
   hp          Int      
-  image_url   String
 
   userId      Int
   user        Users    @relation(fields: [userId], references: [id])

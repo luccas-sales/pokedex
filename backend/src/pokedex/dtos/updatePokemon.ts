@@ -20,8 +20,4 @@ export class UpdatePokemonDTO {
   @IsOptional()
   @IsInt()
   hp?: number;
-
-  @IsOptional()
-  @IsUrl()
-  image_url?: string;
 }

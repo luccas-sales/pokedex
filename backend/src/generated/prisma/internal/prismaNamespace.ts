@@ -609,7 +609,6 @@ export const PokedexScalarFieldEnum = {
   type: 'type',
   level: 'level',
   hp: 'hp',
-  image_url: 'image_url',
   userId: 'userId'
 } as const
 

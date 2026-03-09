@@ -13,7 +13,6 @@ interface Pokemon {
   type: string;
   level: number;
   hp: number;
-  image_url: string;
 }
 
 interface EditPokemonModalProps {
@@ -97,6 +96,11 @@ const pokemonTypes: Record<string, PokemonTypeStyle> = {
     border: 'border-stone-400',
     bar: 'bg-stone-400/10',
     badge: 'bg-stone-400',
+  },
+  eletrico: {
+    border: 'border-yellow-400',
+    bar: 'bg-yellow-400/10',
+    badge: 'bg-yellow-400',
   },
 };
 

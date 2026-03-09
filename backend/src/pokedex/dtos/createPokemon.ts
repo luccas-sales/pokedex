@@ -20,8 +20,4 @@ export class CreatePokemonDTO {
   @IsInt()
   @IsNotEmpty()
   hp: number;
-
-  @IsUrl()
-  @IsNotEmpty()
-  image_url: string;
 }

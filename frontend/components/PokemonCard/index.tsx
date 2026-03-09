@@ -5,7 +5,6 @@ interface PokemonCard {
   id: number;
   pokedex_id: number;
   type: string;
-  image_url: string;
   name: string;
   level: number;
   hp: number;
@@ -89,13 +88,17 @@ const pokemonTypes: Record<string, PokemonTypeStyle> = {
     bar: 'bg-stone-400',
     badge: 'bg-stone-400',
   },
+  eletrico: {
+    border: 'border-yellow-400',
+    bar: 'bg-yellow-400',
+    badge: 'bg-yellow-400',
+  },
 };
 
 export default function PokemonCard({
   id,
   pokedex_id,
   type,
-  image_url,
   name,
   level,
   hp,
@@ -122,8 +125,8 @@ export default function PokemonCard({
           <div className='absolute inset-0 rounded-full bg-black/10' />
 
           <img
-            src={image_url}
-            alt='Bulbasaur'
+            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokedex_id}.png`}
+            alt={name}
             className='relative z-10 drop-shadow-md transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-5'
           />
         </div>

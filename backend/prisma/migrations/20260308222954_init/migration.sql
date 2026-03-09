@@ -16,7 +16,6 @@ CREATE TABLE "Pokedex" (
     "type" TEXT NOT NULL,
     "level" INTEGER NOT NULL,
     "hp" INTEGER NOT NULL,
-    "image_url" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Pokedex_pkey" PRIMARY KEY ("id")

@@ -49,7 +49,6 @@ export type PokedexMinAggregateOutputType = {
   type: string | null
   level: number | null
   hp: number | null
-  image_url: string | null
   userId: number | null
 }
 
@@ -60,7 +59,6 @@ export type PokedexMaxAggregateOutputType = {
   type: string | null
   level: number | null
   hp: number | null
-  image_url: string | null
   userId: number | null
 }
 
@@ -71,7 +69,6 @@ export type PokedexCountAggregateOutputType = {
   type: number
   level: number
   hp: number
-  image_url: number
   userId: number
   _all: number
 }
@@ -100,7 +97,6 @@ export type PokedexMinAggregateInputType = {
   type?: true
   level?: true
   hp?: true
-  image_url?: true
   userId?: true
 }
 
@@ -111,7 +107,6 @@ export type PokedexMaxAggregateInputType = {
   type?: true
   level?: true
   hp?: true
-  image_url?: true
   userId?: true
 }
 
@@ -122,7 +117,6 @@ export type PokedexCountAggregateInputType = {
   type?: true
   level?: true
   hp?: true
-  image_url?: true
   userId?: true
   _all?: true
 }
@@ -220,7 +214,6 @@ export type PokedexGroupByOutputType = {
   type: string
   level: number
   hp: number
-  image_url: string
   userId: number
   _count: PokedexCountAggregateOutputType | null
   _avg: PokedexAvgAggregateOutputType | null
@@ -254,7 +247,6 @@ export type PokedexWhereInput = {
   type?: Prisma.StringFilter<"Pokedex"> | string
   level?: Prisma.IntFilter<"Pokedex"> | number
   hp?: Prisma.IntFilter<"Pokedex"> | number
-  image_url?: Prisma.StringFilter<"Pokedex"> | string
   userId?: Prisma.IntFilter<"Pokedex"> | number
   user?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.UsersWhereInput>
 }
@@ -266,7 +258,6 @@ export type PokedexOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   level?: Prisma.SortOrder
   hp?: Prisma.SortOrder
-  image_url?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   user?: Prisma.UsersOrderByWithRelationInput
 }
@@ -281,7 +272,6 @@ export type PokedexWhereUniqueInput = Prisma.AtLeast<{
   type?: Prisma.StringFilter<"Pokedex"> | string
   level?: Prisma.IntFilter<"Pokedex"> | number
   hp?: Prisma.IntFilter<"Pokedex"> | number
-  image_url?: Prisma.StringFilter<"Pokedex"> | string
   userId?: Prisma.IntFilter<"Pokedex"> | number
   user?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.UsersWhereInput>
 }, "id" | "pokedex_id">
@@ -293,7 +283,6 @@ export type PokedexOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   level?: Prisma.SortOrder
   hp?: Prisma.SortOrder
-  image_url?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   _count?: Prisma.PokedexCountOrderByAggregateInput
   _avg?: Prisma.PokedexAvgOrderByAggregateInput
@@ -312,7 +301,6 @@ export type PokedexScalarWhereWithAggregatesInput = {
   type?: Prisma.StringWithAggregatesFilter<"Pokedex"> | string
   level?: Prisma.IntWithAggregatesFilter<"Pokedex"> | number
   hp?: Prisma.IntWithAggregatesFilter<"Pokedex"> | number
-  image_url?: Prisma.StringWithAggregatesFilter<"Pokedex"> | string
   userId?: Prisma.IntWithAggregatesFilter<"Pokedex"> | number
 }
 
@@ -322,7 +310,6 @@ export type PokedexCreateInput = {
   type: string
   level: number
   hp: number
-  image_url: string
   user: Prisma.UsersCreateNestedOneWithoutPokemonsInput
 }
 
@@ -333,7 +320,6 @@ export type PokedexUncheckedCreateInput = {
   type: string
   level: number
   hp: number
-  image_url: string
   userId: number
 }
 
@@ -343,7 +329,6 @@ export type PokedexUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.IntFieldUpdateOperationsInput | number
   hp?: Prisma.IntFieldUpdateOperationsInput | number
-  image_url?: Prisma.StringFieldUpdateOperationsInput | string
   user?: Prisma.UsersUpdateOneRequiredWithoutPokemonsNestedInput
 }
 
@@ -354,7 +339,6 @@ export type PokedexUncheckedUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.IntFieldUpdateOperationsInput | number
   hp?: Prisma.IntFieldUpdateOperationsInput | number
-  image_url?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -365,7 +349,6 @@ export type PokedexCreateManyInput = {
   type: string
   level: number
   hp: number
-  image_url: string
   userId: number
 }
 
@@ -375,7 +358,6 @@ export type PokedexUpdateManyMutationInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.IntFieldUpdateOperationsInput | number
   hp?: Prisma.IntFieldUpdateOperationsInput | number
-  image_url?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type PokedexUncheckedUpdateManyInput = {
@@ -385,7 +367,6 @@ export type PokedexUncheckedUpdateManyInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.IntFieldUpdateOperationsInput | number
   hp?: Prisma.IntFieldUpdateOperationsInput | number
-  image_url?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -406,7 +387,6 @@ export type PokedexCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   level?: Prisma.SortOrder
   hp?: Prisma.SortOrder
-  image_url?: Prisma.SortOrder
   userId?: Prisma.SortOrder
 }
 
@@ -425,7 +405,6 @@ export type PokedexMaxOrderByAggregateInput = {
   type?: Prisma.SortOrder
   level?: Prisma.SortOrder
   hp?: Prisma.SortOrder
-  image_url?: Prisma.SortOrder
   userId?: Prisma.SortOrder
 }
 
@@ -436,7 +415,6 @@ export type PokedexMinOrderByAggregateInput = {
   type?: Prisma.SortOrder
   level?: Prisma.SortOrder
   hp?: Prisma.SortOrder
-  image_url?: Prisma.SortOrder
   userId?: Prisma.SortOrder
 }
 
@@ -496,7 +474,6 @@ export type PokedexCreateWithoutUserInput = {
   type: string
   level: number
   hp: number
-  image_url: string
 }
 
 export type PokedexUncheckedCreateWithoutUserInput = {
@@ -506,7 +483,6 @@ export type PokedexUncheckedCreateWithoutUserInput = {
   type: string
   level: number
   hp: number
-  image_url: string
 }
 
 export type PokedexCreateOrConnectWithoutUserInput = {
@@ -545,7 +521,6 @@ export type PokedexScalarWhereInput = {
   type?: Prisma.StringFilter<"Pokedex"> | string
   level?: Prisma.IntFilter<"Pokedex"> | number
   hp?: Prisma.IntFilter<"Pokedex"> | number
-  image_url?: Prisma.StringFilter<"Pokedex"> | string
   userId?: Prisma.IntFilter<"Pokedex"> | number
 }
 
@@ -556,7 +531,6 @@ export type PokedexCreateManyUserInput = {
   type: string
   level: number
   hp: number
-  image_url: string
 }
 
 export type PokedexUpdateWithoutUserInput = {
@@ -565,7 +539,6 @@ export type PokedexUpdateWithoutUserInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.IntFieldUpdateOperationsInput | number
   hp?: Prisma.IntFieldUpdateOperationsInput | number
-  image_url?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type PokedexUncheckedUpdateWithoutUserInput = {
@@ -575,7 +548,6 @@ export type PokedexUncheckedUpdateWithoutUserInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.IntFieldUpdateOperationsInput | number
   hp?: Prisma.IntFieldUpdateOperationsInput | number
-  image_url?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type PokedexUncheckedUpdateManyWithoutUserInput = {
@@ -585,7 +557,6 @@ export type PokedexUncheckedUpdateManyWithoutUserInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.IntFieldUpdateOperationsInput | number
   hp?: Prisma.IntFieldUpdateOperationsInput | number
-  image_url?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -597,7 +568,6 @@ export type PokedexSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   type?: boolean
   level?: boolean
   hp?: boolean
-  image_url?: boolean
   userId?: boolean
   user?: boolean | Prisma.UsersDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pokedex"]>
@@ -609,7 +579,6 @@ export type PokedexSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   type?: boolean
   level?: boolean
   hp?: boolean
-  image_url?: boolean
   userId?: boolean
   user?: boolean | Prisma.UsersDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pokedex"]>
@@ -621,7 +590,6 @@ export type PokedexSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   type?: boolean
   level?: boolean
   hp?: boolean
-  image_url?: boolean
   userId?: boolean
   user?: boolean | Prisma.UsersDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pokedex"]>
@@ -633,11 +601,10 @@ export type PokedexSelectScalar = {
   type?: boolean
   level?: boolean
   hp?: boolean
-  image_url?: boolean
   userId?: boolean
 }
 
-export type PokedexOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "pokedex_id" | "name" | "type" | "level" | "hp" | "image_url" | "userId", ExtArgs["result"]["pokedex"]>
+export type PokedexOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "pokedex_id" | "name" | "type" | "level" | "hp" | "userId", ExtArgs["result"]["pokedex"]>
 export type PokedexInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UsersDefaultArgs<ExtArgs>
 }
@@ -660,7 +627,6 @@ export type $PokedexPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     type: string
     level: number
     hp: number
-    image_url: string
     userId: number
   }, ExtArgs["result"]["pokedex"]>
   composites: {}
@@ -1092,7 +1058,6 @@ export interface PokedexFieldRefs {
   readonly type: Prisma.FieldRef<"Pokedex", 'String'>
   readonly level: Prisma.FieldRef<"Pokedex", 'Int'>
   readonly hp: Prisma.FieldRef<"Pokedex", 'Int'>
-  readonly image_url: Prisma.FieldRef<"Pokedex", 'String'>
   readonly userId: Prisma.FieldRef<"Pokedex", 'Int'>
 }
     

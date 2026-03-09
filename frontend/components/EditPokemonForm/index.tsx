@@ -42,11 +42,6 @@ const schema = yup.object({
     )
     .typeError('Deve ser um número')
     .required('O HP é obrigatório'),
-
-  image_url: yup
-    .string()
-    .url('Deve ser uma URL válida')
-    .required('A URL da imagem é obrigatória'),
 });
 
 type FormData = yup.InferType<typeof schema>;
@@ -58,7 +53,6 @@ interface EditFormProps {
   type: string;
   level: number;
   hp: number;
-  image_url: string;
 }
 
 export default function EditPokemonForm({ ...initialData }: EditFormProps) {
@@ -90,7 +84,6 @@ export default function EditPokemonForm({ ...initialData }: EditFormProps) {
           type: data.type,
           level: data.level,
           hp: data.hp,
-          image_url: data.image_url,
         },
         {
           headers: {
@@ -182,15 +175,9 @@ export default function EditPokemonForm({ ...initialData }: EditFormProps) {
             register={register('hp', { valueAsNumber: true })}
           />
         </div>
-
-        <GenericInput
-          id='image'
-          label='URL da Imagem'
-          type='text'
-          placeholder='Ex: https://imagem-pikachu...'
-          error={errors.image_url}
-          register={register('image_url')}
-        />
+        <p className='text-sm text-center text-asters-950/50 font-bold'>
+          *Use o ID correto, pois a imagem é gerada a partir dele
+        </p>
       </div>
 
       <div className='flex flex-row justify-end gap-2 max-sm:flex-col-reverse'>
