@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import { BsFillBackpack2Fill } from 'react-icons/bs';
 import { FaBolt, FaHeart, FaPlus } from 'react-icons/fa';
 import { FiSearch } from 'react-icons/fi';
@@ -9,6 +11,22 @@ import Link from 'next/link';
 import EditPokemonModal from '@/components/EditPokemonModal';
 import DeleteModal from '@/components/DeleteModal';
 import SmoothWrapper from '@/components/SmoothWrapper';
+import axios, { AxiosError } from 'axios';
+import { cookies } from 'next/headers';
+import StatsCardSkeleton from '@/components/StatsCardSkeleton';
+import PokemonCardSkeleton from '@/components/PokemonCardSkeleton';
+import { redirect } from 'next/navigation';
+
+interface Pokemon {
+  id: number;
+  pokedex_id: number;
+  type: string;
+  image_url: string;
+  name: string;
+  level: number;
+  hp: number;
+  userId: number;
+}
 
 export default async function dashboard({
   searchParams,
@@ -16,164 +34,86 @@ export default async function dashboard({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const params = await searchParams;
+
+  if (params.search === '') {
+    redirect('/dashboard');
+  }
+
   const isAddModalOpen = params.modal === 'add';
   const isEditModalOpen = params.modal === 'edit';
   const isDeleteModalOpen = params.modal === 'del';
 
   const pokemonId = params.id ? String(params.id) : null;
 
-  const userPokemonData = [
-    {
-      id: 1,
-      pokedexId: 15,
-      name: 'Charmander',
-      type: 'fogo',
-      level: 10,
-      hp: 39,
-      image:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png',
-    },
-    {
-      id: 2,
-      pokedexId: 2,
-      name: 'Squirtle',
-      type: 'agua',
-      level: 10,
-      hp: 44,
-      image:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png',
-    },
-    {
-      id: 3,
-      pokedexId: 3,
-      name: 'Bulbasaur',
-      type: 'planta',
-      level: 10,
-      hp: 45,
-      image:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png',
-    },
-    {
-      id: 4,
-      pokedexId: 4,
-      name: 'Jynx',
-      type: 'gelo',
-      level: 12,
-      hp: 65,
-      image:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/124.png',
-    },
-    {
-      id: 5,
-      pokedexId: 5,
-      name: 'Machop',
-      type: 'lutador',
-      level: 9,
-      hp: 70,
-      image:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/66.png',
-    },
-    {
-      id: 6,
-      pokedexId: 6,
-      name: 'Ekans',
-      type: 'veneno',
-      level: 8,
-      hp: 35,
-      image:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/23.png',
-    },
-    {
-      id: 7,
-      pokedexId: 7,
-      name: 'Sandshrew',
-      type: 'terra',
-      level: 11,
-      hp: 50,
-      image:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/27.png',
-    },
-    {
-      id: 8,
-      pokedexId: 8,
-      name: 'Pidgey',
-      type: 'voador',
-      level: 6,
-      hp: 40,
-      image:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/16.png',
-    },
-    {
-      id: 9,
-      pokedexId: 9,
-      name: 'Caterpie',
-      type: 'inseto',
-      level: 5,
-      hp: 45,
-      image:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10.png',
-    },
-    {
-      id: 10,
-      pokedexId: 10,
-      name: 'Geodude',
-      type: 'pedra',
-      level: 12,
-      hp: 40,
-      image:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png',
-    },
-    {
-      id: 11,
-      pokedexId: 11,
-      name: 'Gastly',
-      type: 'fantasma',
-      level: 13,
-      hp: 30,
-      image:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/92.png',
-    },
-    {
-      id: 12,
-      pokedexId: 12,
-      name: 'Umbreon',
-      type: 'sombrio',
-      level: 20,
-      hp: 95,
-      image:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/197.png',
-    },
-    {
-      id: 13,
-      pokedexId: 13,
-      name: 'Clefairy',
-      type: 'fada',
-      level: 10,
-      hp: 70,
-      image:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/35.png',
-    },
-    {
-      id: 14,
-      pokedexId: 14,
-      name: 'Eevee',
-      type: 'normal',
-      level: 8,
-      hp: 55,
-      image:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png',
-    },
-  ];
+  const cookieStore = await cookies();
+  const loggedInUserId = cookieStore.get('userId')?.value;
+
+  let userPokemonData = [];
+
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
+    const API = process.env.API_URL;
+
+    const response = await axios.get(`${API}/pokedex/pokemons`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    userPokemonData = response.data;
+  } catch (error) {
+    const err = error as AxiosError;
+
+    if (err.response) {
+      const errorMessage = (err.response.data as { message: string }).message;
+      console.error(errorMessage);
+    } else if (err.request) {
+      console.error('O servidor não respondeu. Verifique sua conexão.');
+    } else {
+      console.error(`Erro de configuração: ${err.message}`);
+    }
+
+    userPokemonData = [];
+  }
 
   const searchQuery = ((params.search as string) || '').toLowerCase();
 
-  const filteredPokemon = userPokemonData.filter((pokemon) => {
+  const filteredPokemon = userPokemonData.filter((pokemon: Pokemon) => {
     return (
       pokemon.name.toLowerCase().includes(searchQuery) ||
       pokemon.type.toLowerCase().includes(searchQuery) ||
-      pokemon.pokedexId.toString().includes(searchQuery)
+      pokemon.pokedex_id.toString().includes(searchQuery)
     );
   });
+
+  const totalLevel = userPokemonData.reduce((acc: number, pokemon: Pokemon) => {
+    return acc + pokemon.level;
+  }, 0);
+
+  const averageLevel =
+    userPokemonData.length > 0
+      ? Math.floor(totalLevel / userPokemonData.length)
+      : 0;
+
+  const totalHp = userPokemonData.reduce((acc: number, pokemon: Pokemon) => {
+    return acc + pokemon.hp;
+  }, 0);
+
+  const averageHp =
+    userPokemonData.length > 0
+      ? Math.floor(totalHp / userPokemonData.length)
+      : 0;
+
+  const myPokemonsQuanty = userPokemonData.reduce(
+    (acc: number, pokemon: Pokemon) => {
+      if (pokemon.userId === Number(loggedInUserId)) {
+        return acc + 1;
+      }
+      return acc;
+    },
+    0,
+  );
 
   return (
     <>
@@ -192,33 +132,44 @@ export default async function dashboard({
       <SmoothWrapper>
         <main className='container mx-auto px-4 py-8'>
           <div className='mt-20 mb-8 grid grid-cols-4 gap-4 max-lg:grid-cols-2 max-sm:grid-cols-1'>
-            <StatsCard
-              title='Total de Pokémon'
-              icon={BsFillBackpack2Fill}
-              quanty={100}
-              description='Registrados na Pokédex'
-            />
+            {userPokemonData.length === 0 ? (
+              <>
+                <StatsCardSkeleton />
+                <StatsCardSkeleton />
+                <StatsCardSkeleton />
+                <StatsCardSkeleton />
+              </>
+            ) : (
+              <>
+                <StatsCard
+                  title='Total de Pokémon'
+                  icon={BsFillBackpack2Fill}
+                  quanty={userPokemonData.length}
+                  description='Registrados na Pokédex'
+                />
 
-            <StatsCard
-              title='Meus Pokémon'
-              icon={FaPlus}
-              quanty={10}
-              description='Adicionados por você'
-            />
+                <StatsCard
+                  title='Meus Pokémon'
+                  icon={FaPlus}
+                  quanty={myPokemonsQuanty}
+                  description='Adicionados por você'
+                />
 
-            <StatsCard
-              title='Nível Médio'
-              icon={FaBolt}
-              quanty={17}
-              description='Entre todos os Pokémon'
-            />
+                <StatsCard
+                  title='Nível Médio'
+                  icon={FaBolt}
+                  quanty={averageLevel}
+                  description='Entre todos os Pokémon'
+                />
 
-            <StatsCard
-              title='HP Médio'
-              icon={FaHeart}
-              quanty={10}
-              description='Pontos de vida'
-            />
+                <StatsCard
+                  title='HP Médio'
+                  icon={FaHeart}
+                  quanty={averageHp}
+                  description='Pontos de vida'
+                />
+              </>
+            )}
           </div>
 
           <div className='bg-sweet-pink-50/75 flex flex-col gap-6 rounded-xl border border-sweet-pink-100 p-6 shadow-sm'>
@@ -260,9 +211,33 @@ export default async function dashboard({
               </form>
 
               <div className='grid grid-cols-4 gap-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1'>
-                {filteredPokemon.map((pokemon) => (
-                  <PokemonCard key={pokemon.pokedexId} {...pokemon} />
-                ))}
+                {userPokemonData.length === 0 ? (
+                  <>
+                    <PokemonCardSkeleton />
+                    <PokemonCardSkeleton />
+                  </>
+                ) : filteredPokemon.length === 0 ? (
+                  <div className='col-span-full flex flex-col items-center justify-center text-center py-12 px-4 border-2 border-dashed border-asters-950/50 rounded-xl bg-asters-50/50'>
+                    <p className='text-lg font-semibold text-asters-950'>
+                      Nenhum Pokémon encontrado
+                    </p>
+                    <p className='text-sm text-asters-950/50'>
+                      Não encontramos resultados para "{searchQuery}". Tente
+                      outro termo ou verifique a ortografia.
+                    </p>
+                  </div>
+                ) : (
+                  filteredPokemon.map((pokemon: Pokemon) => {
+                    const isOwner = pokemon.userId === Number(loggedInUserId);
+                    return (
+                      <PokemonCard
+                        key={`key__${pokemon.pokedex_id}`}
+                        {...pokemon}
+                        isOwner={isOwner}
+                      />
+                    );
+                  })
+                )}
               </div>
             </div>
           </div>

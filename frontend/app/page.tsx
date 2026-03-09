@@ -33,10 +33,7 @@ export default function Home() {
             data-speed='0.8'
           />
 
-          <div
-            className='relative flex flex-col justify-center items-center h-full w-full gap-4 z-50'
-            data-speed='0.4'
-          >
+          <div className='relative flex flex-col justify-center items-center h-full w-full gap-4 z-50'>
             <div className='flex flex-col justify-center items-center gap-2'>
               <h2 className='text-7xl text-asters-500 font-extrabold text-shadow-md'>
                 Pokédex

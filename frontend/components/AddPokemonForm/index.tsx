@@ -4,15 +4,18 @@ import GenericInput from '../GenericInput';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useState } from 'react';
 
 import Link from 'next/link';
 import { GenericSelect } from '../GenericSelect';
+import Cookies from 'js-cookie';
+import { useState } from 'react';
+import axios, { AxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
 
 const schema = yup.object({
   name: yup.string().required('Digite o nome do Pokémon'),
 
-  pokedexId: yup
+  pokedex_id: yup
     .number()
     .transform((value, originalValue) =>
       originalValue === '' ? undefined : value,
@@ -50,6 +53,9 @@ const schema = yup.object({
 type FormData = yup.InferType<typeof schema>;
 
 export default function AddPokemonForm() {
+  const [errorMessage, setErrorMessage] = useState('');
+  const router = useRouter();
+
   const {
     handleSubmit,
     register,
@@ -58,7 +64,7 @@ export default function AddPokemonForm() {
   } = useForm({
     defaultValues: {
       name: '',
-      pokedexId: 1,
+      pokedex_id: 1,
       type: '',
       level: 1,
       hp: 0,
@@ -68,11 +74,43 @@ export default function AddPokemonForm() {
   });
 
   const onSubmit = async (data: FormData) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      setErrorMessage('');
 
-    console.log('Dados prontos:', data);
-    alert('Pokémon Adicionado com Sucesso!');
-    reset();
+      const token = Cookies.get('token');
+      const API = process.env.API_URL;
+
+      const response = await axios.post(
+        `${API}/pokedex/pokemons`,
+        {
+          name: data.name,
+          pokedex_id: data.pokedex_id,
+          type: data.type,
+          level: data.level,
+          hp: data.hp,
+          image_url: data.image,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+    } catch (error) {
+      const err = error as AxiosError;
+
+      if (err.response) {
+        const errorMessage = (err.response.data as { message: string }).message;
+        setErrorMessage(errorMessage);
+      } else if (err.request) {
+        setErrorMessage('O servidor não respondeu. Verifique sua conexão.');
+      } else {
+        setErrorMessage(`Erro de configuração: ${err.message}`);
+      }
+      return;
+    }
+
+    router.push('/dashboard');
   };
 
   return (
@@ -89,12 +127,12 @@ export default function AddPokemonForm() {
 
         <div className='flex gap-4'>
           <GenericInput
-            id='pokedexId'
+            id='pokedex_id'
             label='Id na Pokedex'
             type='number'
             placeholder=''
-            error={errors.pokedexId}
-            register={register('pokedexId', { valueAsNumber: true })}
+            error={errors.pokedex_id}
+            register={register('pokedex_id', { valueAsNumber: true })}
           />
 
           <GenericSelect
@@ -171,6 +209,9 @@ export default function AddPokemonForm() {
           {isSubmitting ? 'Adicionando...' : 'Adicionar'}
         </button>
       </div>
+      {errorMessage && (
+        <p className='text-center text-xs text-red-600'>{errorMessage}</p>
+      )}
     </form>
   );
 }

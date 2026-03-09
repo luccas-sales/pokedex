@@ -3,12 +3,13 @@ import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 
 interface PokemonCard {
   id: number;
-  pokedexId: number;
+  pokedex_id: number;
   type: string;
-  image: string;
+  image_url: string;
   name: string;
   level: number;
   hp: number;
+  isOwner: boolean;
 }
 
 interface PokemonTypeStyle {
@@ -92,12 +93,13 @@ const pokemonTypes: Record<string, PokemonTypeStyle> = {
 
 export default function PokemonCard({
   id,
-  pokedexId,
+  pokedex_id,
   type,
-  image,
+  image_url,
   name,
   level,
   hp,
+  isOwner,
 }: PokemonCard) {
   return (
     <div
@@ -107,7 +109,7 @@ export default function PokemonCard({
 
       <div className='p-4'>
         <div className='mb-2 flex justify-between'>
-          <span className='font-mono text-sm text-black/50'>#{pokedexId}</span>
+          <span className='font-mono text-sm text-black/50'>#{pokedex_id}</span>
 
           <span
             className={`rounded ${pokemonTypes[type.toLowerCase()].badge} px-2 py-0.5 text-xs text-white uppercase`}
@@ -120,7 +122,7 @@ export default function PokemonCard({
           <div className='absolute inset-0 rounded-full bg-black/10' />
 
           <img
-            src={image}
+            src={image_url}
             alt='Bulbasaur'
             className='relative z-10 drop-shadow-md transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-5'
           />
@@ -140,25 +142,27 @@ export default function PokemonCard({
           </div>
         </div>
 
-        <div className='flex gap-2'>
-          <Link
-            className='flex justify-center items-center gap-2 bg-blue-700 text-sm
+        {isOwner && (
+          <div className='flex gap-2'>
+            <Link
+              className='flex justify-center items-center gap-2 bg-blue-700 text-sm
                 text-blue-50 font-bold py-2 px-4 rounded-md border-2 border-blue-700/50 text-nowrap cursor-pointer w-full transition-all duration-300 ease-out shadow-sm inset-shadow-sm active:scale-95 lg:active:scale-95 lg:hover:-translate-y-0.5 lg:hover:bg-blue-950 lg:hover:shadow-md'
-            href={`?modal=edit&id=${id}`}
-          >
-            <FiEdit2 />
-            Editar
-          </Link>
+              href={`?modal=edit&id=${id}`}
+            >
+              <FiEdit2 />
+              Editar
+            </Link>
 
-          <Link
-            className='flex justify-center items-center gap-2 bg-red-700 text-sm
+            <Link
+              className='flex justify-center items-center gap-2 bg-red-700 text-sm
                 text-red-50 font-bold py-2 px-4 rounded-md border-2 border-red-700/50 text-nowrap cursor-pointer w-full transition-all duration-300 ease-out shadow-sm inset-shadow-sm active:scale-95 lg:active:scale-95 lg:hover:-translate-y-0.5 lg:hover:bg-red-950 lg:hover:shadow-md'
-            href={`?modal=del&id=${id}`}
-          >
-            <FiTrash2 />
-            Excluir
-          </Link>
-        </div>
+              href={`?modal=del&id=${id}`}
+            >
+              <FiTrash2 />
+              Excluir
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

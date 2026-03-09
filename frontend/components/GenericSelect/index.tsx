@@ -30,7 +30,7 @@ export function GenericSelect({
 
       <select
         id={id}
-        className='border border-asters-300 w-full px-3 py-2 rounded-lg outline-none bg-white cursor-pointer h-9.5 text-sm'
+        className='border border-asters-300 w-full px-3 py-1 rounded-lg outline-none bg-white cursor-pointer h-full text-sm'
         {...register}
       >
         <option value='' disabled>

@@ -8,11 +8,12 @@ import { useRouter } from 'next/navigation';
 
 interface Pokemon {
   id: number;
-  pokedexId: number;
+  pokedex_id: number;
   name: string;
   type: string;
   level: number;
   hp: number;
+  image_url: string;
 }
 
 interface EditPokemonModalProps {

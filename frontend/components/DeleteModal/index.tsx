@@ -5,10 +5,12 @@ import { HiX } from 'react-icons/hi';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import axios, { AxiosError } from 'axios';
+import Cookies from 'js-cookie';
 
 interface Pokemon {
   id: number;
-  pokedexId: number;
+  pokedex_id: number;
   name: string;
   type: string;
   level: number;
@@ -25,6 +27,7 @@ export default function AddPokemonModal({
   userPokemonData,
 }: EditPokemonModalProps) {
   const [isDeleting, setIsDeleting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
   const pokemon = userPokemonData.find((pokemon) => pokemon.id === Number(id));
@@ -35,11 +38,30 @@ export default function AddPokemonModal({
   }
 
   const handleDelete = async (id: number) => {
-    setIsDeleting(true);
+    try {
+      setErrorMessage('');
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+      const token = Cookies.get('token');
+      const API = process.env.API_URL;
 
-    alert('Pokémon foi deletado com Sucesso!');
+      const response = await axios.delete(`${API}/pokedex/pokemons/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+
+      if (err.response) {
+        const errorMessage = (err.response.data as { message: string }).message;
+        setErrorMessage(errorMessage);
+      } else if (err.request) {
+        setErrorMessage('O servidor não respondeu. Verifique sua conexão.');
+      } else {
+        setErrorMessage(`Erro de configuração: ${err.message}`);
+      }
+      return;
+    }
 
     router.push('/dashboard');
   };
@@ -79,6 +101,9 @@ export default function AddPokemonModal({
             {isDeleting ? 'Deletando...' : 'Deletar'}
           </button>
         </div>
+        {errorMessage && (
+          <p className='text-center text-xs text-red-600'>{errorMessage}</p>
+        )}
       </div>
     </div>
   );

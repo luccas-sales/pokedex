@@ -5,6 +5,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import GenericInput from '../GenericInput';
 import { useRouter } from 'next/navigation';
+import axios, { AxiosError } from 'axios';
+import Cookies from 'js-cookie';
+import { useState } from 'react';
 
 const schema = yup.object({
   username: yup
@@ -36,6 +39,7 @@ const schema = yup.object({
 type FormData = yup.InferType<typeof schema>;
 
 export default function RegisterForm() {
+  const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
   const {
@@ -54,13 +58,43 @@ export default function RegisterForm() {
   });
 
   const onSubmit = async (data: FormData) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      setErrorMessage('');
+      const API = process.env.API_URL;
 
-    alert('Registro Realizado com Sucesso!');
+      const response = await axios.post(`${API}/auth/signup`, {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      });
+
+      Cookies.set('token', response.data.accessToken, {
+        expires: 1,
+        path: '/',
+      });
+      Cookies.set('userId', response.data.id, {
+        expires: 1,
+        path: '/',
+      });
+      Cookies.set('username', response.data.username, {
+        expires: 1,
+        path: '/',
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+
+      if (err.response) {
+        const errorMessage = (err.response.data as { message: string }).message;
+        setErrorMessage(errorMessage);
+      } else if (err.request) {
+        setErrorMessage('O servidor não respondeu. Verifique sua conexão.');
+      } else {
+        setErrorMessage(`Erro de configuração: ${err.message}`);
+      }
+      return;
+    }
 
     router.push('/dashboard');
-
-    reset();
   };
 
   return (
@@ -113,6 +147,9 @@ export default function RegisterForm() {
       >
         {isSubmitting ? 'Criando...' : 'Criar Conta'}
       </button>
+      {errorMessage && (
+        <p className='text-center text-xs text-red-600'>{errorMessage}</p>
+      )}
     </form>
   );
 }

@@ -2,23 +2,30 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdCatchingPokemon } from 'react-icons/md';
 import { RxExit } from 'react-icons/rx';
+import Cookies from 'js-cookie';
+import UsernameSkeleton from '../UsernameSkeleton';
 
 export default function Header() {
+  const [username, setUsername] = useState(' ');
   const [isLogouting, setIsLogouting] = useState(false);
   const router = useRouter();
 
   const handleLogout = async () => {
     setIsLogouting(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    alert('Você foi desconectado com Sucesso!');
+    Cookies.remove('token', { path: '/' });
+    Cookies.remove('username', { path: '/' });
 
     router.push('/');
   };
+
+  useEffect(() => {
+    const cookieUsername = Cookies.get('username');
+    setUsername(cookieUsername || '');
+  }, []);
 
   return (
     <header className='fixed flex justify-between items-center bg-sweet-pink-100/75 border-b border-sweet-pink-100 px-4 py-2 w-full backdrop-blur-xs backdrop-grayscale z-40'>
@@ -39,9 +46,14 @@ export default function Header() {
           </div>
         </div>
         <div className='flex justify-center items-center gap-4 max-sm:flex-col max-sm:gap-1'>
-          <p className='text-sm text-asters-700 font-bold uppercase max-sm:text-xs'>
-            usuario
-          </p>
+          {username ? (
+            <p className='text-sm text-asters-700 font-bold uppercase max-sm:text-xs'>
+              {username}
+            </p>
+          ) : (
+            <UsernameSkeleton />
+          )}
+
           <button
             className={`flex items-center gap-2 bg-sweet-pink-50 text-sm
                  font-bold py-2 px-4 rounded-md border-2 border-sweet-pink-100 text-nowrap cursor-pointer transition-all duration-300 ease-out shadow-sm inset-shadow-sm active:scale-95 lg:active:scale-95 lg:hover:-translate-y-0.5 lg:hover:bg-sweet-pink-700 

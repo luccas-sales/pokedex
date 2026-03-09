@@ -6,11 +6,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Link from 'next/link';
 import { GenericSelect } from '../GenericSelect';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import axios, { AxiosError } from 'axios';
+import Cookies from 'js-cookie';
 
 const schema = yup.object({
   name: yup.string().required('Digite o nome do Pokémon'),
 
-  pokedexId: yup
+  pokedex_id: yup
     .number()
     .transform((value, originalValue) =>
       originalValue === '' ? undefined : value,
@@ -39,7 +43,7 @@ const schema = yup.object({
     .typeError('Deve ser um número')
     .required('O HP é obrigatório'),
 
-  image: yup
+  image_url: yup
     .string()
     .url('Deve ser uma URL válida')
     .required('A URL da imagem é obrigatória'),
@@ -49,15 +53,18 @@ type FormData = yup.InferType<typeof schema>;
 
 interface EditFormProps {
   id: number;
-  pokedexId: number;
+  pokedex_id: number;
   name: string;
   type: string;
   level: number;
   hp: number;
-  image: string;
+  image_url: string;
 }
 
 export default function EditPokemonForm({ ...initialData }: EditFormProps) {
+  const [errorMessage, setErrorMessage] = useState('');
+  const router = useRouter();
+
   const {
     handleSubmit,
     register,
@@ -69,12 +76,43 @@ export default function EditPokemonForm({ ...initialData }: EditFormProps) {
   });
 
   const onSubmit = async (data: FormData) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      setErrorMessage('');
 
-    console.log('Dados prontos:', data);
+      const token = Cookies.get('token');
+      const API = process.env.API_URL;
 
-    alert('Pokémon atualizado com Sucesso!');
-    reset();
+      const response = await axios.put(
+        `${API}/pokedex/pokemons/${initialData.id}`,
+        {
+          name: data.name,
+          pokedex_id: data.pokedex_id,
+          type: data.type,
+          level: data.level,
+          hp: data.hp,
+          image_url: data.image_url,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+    } catch (error) {
+      const err = error as AxiosError;
+
+      if (err.response) {
+        const errorMessage = (err.response.data as { message: string }).message;
+        setErrorMessage(errorMessage);
+      } else if (err.request) {
+        setErrorMessage('O servidor não respondeu. Verifique sua conexão.');
+      } else {
+        setErrorMessage(`Erro de configuração: ${err.message}`);
+      }
+      return;
+    }
+
+    router.push('/dashboard');
   };
 
   return (
@@ -91,12 +129,12 @@ export default function EditPokemonForm({ ...initialData }: EditFormProps) {
 
         <div className='flex gap-4'>
           <GenericInput
-            id='pokedexId'
+            id='pokedex_id'
             label='Id na Pokedex'
             type='number'
             placeholder=''
-            error={errors.pokedexId}
-            register={register('pokedexId', { valueAsNumber: true })}
+            error={errors.pokedex_id}
+            register={register('pokedex_id', { valueAsNumber: true })}
           />
 
           <GenericSelect
@@ -150,8 +188,8 @@ export default function EditPokemonForm({ ...initialData }: EditFormProps) {
           label='URL da Imagem'
           type='text'
           placeholder='Ex: https://imagem-pikachu...'
-          error={errors.image}
-          register={register('image')}
+          error={errors.image_url}
+          register={register('image_url')}
         />
       </div>
 
@@ -173,6 +211,9 @@ export default function EditPokemonForm({ ...initialData }: EditFormProps) {
           {isSubmitting ? 'Alterando...' : 'Alterar'}
         </button>
       </div>
+      {errorMessage && (
+        <p className='text-center text-xs text-red-600'>{errorMessage}</p>
+      )}
     </form>
   );
 }
