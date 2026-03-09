@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreatePokemonDTO } from './dtos/createPokemon';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../prisma.service';
 import { UpdatePokemonDTO } from './dtos/updatePokemon';
 
 @Injectable()
